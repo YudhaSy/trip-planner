@@ -1,0 +1,31 @@
+<div class="containered my-3 w-100" *ngIf="data !== undefined">
+  <ng-container *ngIf="data.fetchingData; else weatherDataFetchingComplete">
+    Fetching Weather Data...
+  </ng-container>
+  <ng-template #weatherDataFetchingComplete>
+    <ng-container class="px-3" *ngIf="data.errorMsg === null; else noDataAvailable">
+      <ng-container *ngIf="data.type === displayTypeEnum.Weather && data.weather !== undefined; else cityDescriptionDisplay">
+        <div class="weather-container">
+          <img src="{{data.weather!.iconUrl}}">
+          <p>{{data.weather!.currentTemp}}&deg;C</p>
+        </div>
+        <div class="px-2">
+          <p style="font-weight: 600; margin-bottom: 0;">Feels like
+            {{data.weather!.feelsLike}}&deg;C.
+            {{data.weather!.description}}.</p>
+        </div>
+        <div class="px-2">
+          <p style="font-weight: 500; font-size: 0.9rem;">Min temp: {{data.weather!.minTemp}}&deg;C.
+            Max temp:
+            {{data.weather!.maxTemp}}&deg;C. Humidity: {{data.weather!.humidity}}&#37;.</p>
+        </div>
+      </ng-container>
+      <ng-template #cityDescriptionDisplay>
+        <div class="px-3" [innerHTML]="data.cityInfo"></div>
+      </ng-template>
+    </ng-container>
+    <ng-template #noDataAvailable>
+      <p style="color: red">{{data.errorMsg}}</p>
+    </ng-template>
+  </ng-template>
+</div>

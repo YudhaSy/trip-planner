@@ -1,31 +1,14 @@
 <div class="container">
   <div class="row">
-    <div class="col">
+    <div class="col" style="text-align: center;">
       <h1>{{title}}</h1>
     </div>
   </div>
   <hr>
-  <div class="row">
-    <div class="col-md-4 px-3">
-      <ng-select [items]="cities" bindLabel="name" bindValue="id" [multiple]="false" placeholder="Select a city"
-        [(ngModel)]="selectedCity" (ngModelChange)="citySelectionChange($event)" clearAllText="Clear"
-        (clear)="clearCityInfo()">
-      </ng-select>
-    </div>
-  </div>
-  <ng-container *ngIf="selectedCity !== null">
-    <div class="row my-3">
       <div class="col-md-5 px-3">
         <h5>{{getObjectFromList(selectedCity, 'cities')!.name}}'s Wikipedia Description:</h5>
         <div class="containered">
           <ng-container *ngIf="fetchingCityDescriptionData; else cityDescriptionComplete">
-            Fetching City Description Data...
-          </ng-container>
-          <ng-template #cityDescriptionComplete>
-            <ng-container *ngIf="selectedCityDescription !== null; else cityDescriptionErrMsg">
-              <div class="px-3" [innerHTML]="selectedCityDescription"></div>
-            </ng-container>
-            <ng-template #cityDescriptionErrMsg>
               <p style="color: red">{{cityDesriptionErrorMsg}}</p>
             </ng-template>
           </ng-template>
@@ -33,39 +16,6 @@
       </div>
     </div>
     <hr>
-    <div class="row my-3">
-      <div class="col-md-5 px-3">
-        <h5>{{getObjectFromList(selectedWeatherType, 'weatherTypes')!.name}}'s Current Weather:</h5>
-        <div class="col-md-4">
-          <ng-select [items]="weatherTypes" [clearable]="false" bindLabel="name" bindValue="id" [multiple]="false"
-            [(ngModel)]="selectedWeatherType" (ngModelChange)="weatherSelectionChange($event)">
-          </ng-select>
-        </div>
-        <div class="containered my-3">
-          <ng-container *ngIf="fetchingCurrentWeatherData; else weatherDataFetchingComplete">
-            Fetching Weather Data...
-          </ng-container>
-          <ng-template #weatherDataFetchingComplete>
-            <ng-container class="px-3" *ngIf="weather !== null; else noCurrentWeatherAvailable">
-              <div class="weather-container">
-                <img src="{{weather.iconUrl}}">
-                <p>{{weather.currentTemp}}&deg;C</p>
-              </div>
-              <div class="px-2">
-                <p style="font-weight: 600; margin-bottom: 0;">Feels like {{weather.feelsLike}}&deg;C.
-                  {{weather.description}}.</p>
-              </div>
-              <div class="px-2">
-                <p style="font-weight: 500; font-size: 0.9rem;">Min temp: {{weather.minTemp}}&deg;C. Max temp:
-                  {{weather.maxTemp}}&deg;C. Humidity: {{weather.humidity}}&#37;.</p>
-              </div>
-            </ng-container>
-            <ng-template #noCurrentWeatherAvailable>
-              <p style="color: red">{{currentWeatherErrorMsg}}</p>
-            </ng-template>
-          </ng-template>
-        </div>
-      </div>
-    </div>
-  </ng-container>
+  <app-city-info (cityNameChange)="cityName = $event"></app-city-info>
+  <app-city-weather *ngIf="cityName !== null" [cityName]="cityName"></app-city-weather>
 </div>

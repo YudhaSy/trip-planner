@@ -1,0 +1,15 @@
+.containered {
+    height: 10rem;
+    border: 0.1rem dotted #000;
+    overflow-y: auto;
+}
+
+.weather-container {
+  display: inline-block;
+}
+
+.weather-container img,
+.weather-container p {
+  display: inline-block;
+  font-size: 2rem;
+}

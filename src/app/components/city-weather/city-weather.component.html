@@ -1,0 +1,8 @@
+<div class="row my-3">
+  <div class="col-md-5 w-100">
+    <h5>{{_cityName}}'s Current Weather:</h5>
+    <input class="w-50" type="text" bsDatepicker [bsConfig]="bsConfig" placement="top" [(bsValue)]="bsValue"
+      (bsValueChange)="handleWeatherByDateChange()" />
+    <app-information-display [data]="data"></app-information-display>
+  </div>
+</div>
