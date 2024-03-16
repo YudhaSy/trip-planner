@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DisplayType } from '../../enums/displayType';
-import { DisplayDataWrapper } from '../../models/displayDataWrapper';
+import { DisplayData } from '../../models/displayData';
 
 @Component({
   selector: 'app-information-display',
@@ -8,7 +8,7 @@ import { DisplayDataWrapper } from '../../models/displayDataWrapper';
   styleUrl: './information-display.component.css'
 })
 export class InformationDisplayComponent {
-  @Input() data: DisplayDataWrapper | undefined;
+  @Input() data: DisplayData | undefined;
 
   displayTypeEnum = DisplayType;
 }

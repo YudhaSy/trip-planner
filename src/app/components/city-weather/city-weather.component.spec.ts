@@ -12,7 +12,6 @@ describe('CityWeatherComponent', () => {
   let weatherServiceStub: Partial<WeatherService>;
 
   beforeEach(async () => {
-    // Create a stub for the WeatherService
     weatherServiceStub = {
       getWeather: jasmine.createSpy('getWeather').and.returnValue(of({} as Weather))
     };
@@ -51,7 +50,6 @@ describe('CityWeatherComponent', () => {
     component._cityName = cityName;
     component.forecastWeatherDataList = []; // Clear forecast data initially
 
-    // Stub the getWeather method to return an observable of type Weather
     const mockWeather: Weather = {
       date: new Date(),
       iconUrl: 'mock-icon-url',

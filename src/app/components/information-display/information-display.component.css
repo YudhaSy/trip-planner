@@ -1,15 +1,19 @@
-.containered {
+.info-container {
     height: 10rem;
     border: 0.1rem dotted #000;
     overflow-y: auto;
 }
 
-.weather-container {
+.weather-icon-container {
   display: inline-block;
 }
 
-.weather-container img,
-.weather-container p {
+.weather-icon-container img,
+.weather-icon-container p {
   display: inline-block;
   font-size: 2rem;
+}
+
+.error {
+  color: red;
 }

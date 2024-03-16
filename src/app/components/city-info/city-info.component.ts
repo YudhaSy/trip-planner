@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Select } from '../../models/select';
 import { Subscription } from 'rxjs';
 import { WikipediaService } from '../../services/wikipedia.service';
-import { DisplayDataWrapper } from '../../models/displayDataWrapper';
+import { DisplayData } from '../../models/displayData';
 import { DisplayType } from '../../enums/displayType';
 
 @Component({
@@ -13,9 +13,8 @@ import { DisplayType } from '../../enums/displayType';
 export class CityInfoComponent {
   @Output() cityNameChange = new EventEmitter<string | null>();
 
-  data: DisplayDataWrapper = {
+  data: DisplayData = {
     fetchingData: false,
-    fetchingMsg: 'Fetching City Description Data...',
     type: DisplayType.Info,
     cityInfo: null,
     errorMsg: null

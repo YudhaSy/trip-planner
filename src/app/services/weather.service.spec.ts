@@ -19,7 +19,6 @@ describe('WeatherService', () => {
   });
 
   afterEach(() => {
-    // After each test, verify that there are no outstanding requests
     httpTestingController.verify();
   });
 
@@ -30,40 +29,114 @@ describe('WeatherService', () => {
   it('should fetch current weather data', () => {
     const cityName = 'Calgary';
     const weatherType = WeatherTypeEnum.Current;
-    const mockWeatherData = {
-      // Mock weather data response
-      main: {
-        temp: 20, // Mock temperature
-        feels_like: 18, // Mock feels like temperature
-        temp_min: 15, // Mock min temperature
-        temp_max: 25, // Mock max temperature
-        humidity: 50 // Mock humidity
-      },
+    const mockWeatherData =
+    {
       weather: [
         {
-          description: 'Clear sky' // Mock weather description
+          "id": 804,
+          "main": "Clouds",
+          "description": "overcast clouds",
+          "icon": "04d"
+        }
+      ],
+      "main": {
+        "temp": 4.07,
+        "feels_like": 0.98,
+        "temp_min": 0.97,
+        "temp_max": 7.63,
+        "pressure": 1021,
+        "humidity": 75
+      },
+      "dt": 1710603972
+    };
+
+    service.getWeather(cityName, weatherType).subscribe((weather: Weather) => {
+      expect(weather.currentTemp).toEqual('5');
+      expect(weather.feelsLike).toEqual('1'); 
+      expect(weather.minTemp).toEqual('1'); 
+      expect(weather.maxTemp).toEqual('8'); 
+      expect(weather.humidity).toEqual('75');
+      expect(weather.description).toEqual('Overcast clouds');
+    });
+
+    const req = httpTestingController.expectOne(
+      `https://api.openweathermap.org/data/2.5/${weatherType}?q=${cityName}&units=metric&appid=${service.apiKey}`
+    );
+    expect(req.request.method).toEqual('GET');
+
+    req.flush(mockWeatherData);
+  });
+
+  it('should fetch forecast weather data', () => {
+    const cityName = 'Calgary';
+    const weatherType = WeatherTypeEnum.Forecast;
+    const mockWeatherData =
+    {
+      "list": [
+        {
+          "dt": 1711033200,
+          "main": {
+            "temp": -2.14,
+            "feels_like": -7.53,
+            "temp_min": -2.14,
+            "temp_max": -2.14,
+            "pressure": 1022,
+            "sea_level": 1022,
+            "grnd_level": 897,
+            "humidity": 89,
+            "temp_kf": 0
+          },
+          "weather": [
+            {
+              "id": 600,
+              "main": "Snow",
+              "description": "light snow",
+              "icon": "13n"
+            }
+          ],
+          "dt_txt": "2024-03-21 09:00:00"
+        },
+        {
+          "dt": 1711044000,
+          "main": {
+            "temp": -2.26,
+            "feels_like": -7.81,
+            "temp_min": -2.26,
+            "temp_max": -2.26,
+            "pressure": 1021,
+            "sea_level": 1021,
+            "grnd_level": 896,
+            "humidity": 89,
+            "temp_kf": 0
+          },
+          "weather": [
+            {
+              "id": 600,
+              "main": "Snow",
+              "description": "light snow",
+              "icon": "13n"
+            }
+          ],
+          "dt_txt": "2024-03-21 12:00:00"
         }
       ]
     };
 
-    // Subscribe to the service method
     service.getWeather(cityName, weatherType).subscribe((weather: Weather) => {
-      // Assertion: Ensure that the returned weather object matches the expected structure
-      expect(weather.currentTemp).toEqual('20'); // Verify temperature
-      expect(weather.feelsLike).toEqual('18'); // Verify feels like temperature
-      expect(weather.minTemp).toEqual('15'); // Verify min temperature
-      expect(weather.maxTemp).toEqual('25'); // Verify max temperature
-      expect(weather.humidity).toEqual('50'); // Verify humidity
-      expect(weather.description).toEqual('Clear sky'); // Verify weather description
+      expect(weather.forecastList.length).toBe(1); // for simplicity, we just going to generate 1 in the list
+      expect(weather.forecastList[0].currentTemp).toEqual('-2');
+      expect(weather.forecastList[0].feelsLike).toEqual('-7'); 
+      expect(weather.forecastList[0].minTemp).toEqual('-2'); 
+      expect(weather.forecastList[0].maxTemp).toEqual('-2'); 
+      expect(weather.forecastList[0].humidity).toEqual('89');
+      expect(weather.forecastList[0].description).toEqual('Light snow');
     });
 
-    // Mock HTTP request
     const req = httpTestingController.expectOne(
       `https://api.openweathermap.org/data/2.5/${weatherType}?q=${cityName}&units=metric&appid=${service.apiKey}`
     );
-    expect(req.request.method).toEqual('GET'); // Ensure that the request is of type GET
+    expect(req.request.method).toEqual('GET');
 
-    // Respond with mock weather data
     req.flush(mockWeatherData);
   });
 });

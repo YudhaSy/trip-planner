@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-4 px-3 w-50">
+  <div class="col-md-6 col-sm-12 px-3">
     <ng-select [items]="cities" bindLabel="name" bindValue="id" [multiple]="false" placeholder="Select a city"
       [(ngModel)]="selectedCity" (ngModelChange)="citySelectionChange($event)" clearAllText="Clear"
       (clear)="clearCityInfo()">
@@ -7,7 +7,7 @@
   </div>
 </div>
 <div class="row my-3">
-  <div class="col-md-5 px-3 w-100" *ngIf="selectedCity !== null">
+  <div class="px-3 w-100" *ngIf="selectedCity !== null">
     <h5>{{getCityFromCities(selectedCity!)!.name}}'s Wikipedia Description:</h5>
     <app-information-display [data]="data"></app-information-display>
   </div>

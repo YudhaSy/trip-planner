@@ -5,7 +5,7 @@ import { WeatherService } from '../../services/weather.service';
 import { WeatherTypeEnum } from '../../enums/weatherTypeEnum';
 import _ from 'lodash';
 import { DisplayType } from '../../enums/displayType';
-import { DisplayDataWrapper } from '../../models/displayDataWrapper';
+import { DisplayData } from '../../models/displayData';
 
 @Component({
   selector: 'app-city-weather',
@@ -20,9 +20,8 @@ export class CityWeatherComponent {
     this.getWeatherData(WeatherTypeEnum.Current);
   }
 
-  data: DisplayDataWrapper = {
+  data: DisplayData = {
     fetchingData: false,
-    fetchingMsg: 'Fetching Weather Data...',
     type: DisplayType.Weather,
     weather: null,
     errorMsg: null

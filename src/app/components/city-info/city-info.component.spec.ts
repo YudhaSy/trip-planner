@@ -10,7 +10,6 @@ describe('CityInfoComponent', () => {
   let wikipediaServiceStub: Partial<WikipediaService>;
 
   beforeEach(async () => {
-    // Create a stub for the WikipediaService
     wikipediaServiceStub = {
       getCityDescription: jasmine.createSpy('getCityDescription').and.returnValue(of('Mock city description'))
     };

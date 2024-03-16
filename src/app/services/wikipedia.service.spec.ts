@@ -27,19 +27,15 @@ describe('WikipediaService', () => {
     const cityName = 'Calgary';
     const mockDescription = 'Calgary is a city in Alberta, Canada.';
 
-    // Subscribe to the service method
     service.getCityDescription(cityName).subscribe((description: string) => {
-      // Assertion: Ensure that the returned description matches the expected description
       expect(description).toEqual(mockDescription);
     });
 
-    // Mock HTTP request
     const req = httpTestingController.expectOne(
       `https://en.wikipedia.org/w/api.php?origin=*&action=query&format=json&prop=extracts&exintro=true&redirects=true&titles=${cityName}`
     );
-    expect(req.request.method).toEqual('GET'); // Ensure that the request is of type GET
+    expect(req.request.method).toEqual('GET');
 
-    // Respond with mock description
     const mockResponse = {
       query: {
         pages: {
