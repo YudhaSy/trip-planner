@@ -5,17 +5,6 @@
     </div>
   </div>
   <hr>
-      <div class="col-md-5 px-3">
-        <h5>{{getObjectFromList(selectedCity, 'cities')!.name}}'s Wikipedia Description:</h5>
-        <div class="containered">
-          <ng-container *ngIf="fetchingCityDescriptionData; else cityDescriptionComplete">
-              <p style="color: red">{{cityDesriptionErrorMsg}}</p>
-            </ng-template>
-          </ng-template>
-        </div>
-      </div>
-    </div>
-    <hr>
   <app-city-info (cityNameChange)="cityName = $event"></app-city-info>
   <app-city-weather *ngIf="cityName !== null" [cityName]="cityName"></app-city-weather>
 </div>
