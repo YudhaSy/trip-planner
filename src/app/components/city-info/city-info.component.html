@@ -9,6 +9,14 @@
 <div class="row my-3">
   <div class="px-3 w-100" *ngIf="selectedCity !== null">
     <h5>{{getCityFromCities(selectedCity!)!.name}}'s Wikipedia Description:</h5>
-    <app-information-display [data]="data"></app-information-display>
+    <app-information-display 
+      [templateOutlet]="templateOutlet" 
+      [errorMsg]="errorMsg!" 
+      [fetchingData]="fetchingData">
+    </app-information-display>
   </div>
 </div>
+
+<ng-template #templateOutlet>
+  <div class="px-3" [innerHTML]="cityInfo"></div>
+</ng-template>

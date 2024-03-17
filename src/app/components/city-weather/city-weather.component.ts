@@ -4,8 +4,6 @@ import { Subscription } from 'rxjs';
 import { WeatherService } from '../../services/weather.service';
 import { WeatherTypeEnum } from '../../enums/weatherTypeEnum';
 import _ from 'lodash';
-import { DisplayType } from '../../enums/displayType';
-import { DisplayData } from '../../models/displayData';
 
 @Component({
   selector: 'app-city-weather',
@@ -20,16 +18,15 @@ export class CityWeatherComponent {
     this.getWeatherData(WeatherTypeEnum.Current);
   }
 
-  data: DisplayData = {
-    fetchingData: false,
-    type: DisplayType.Weather,
-    weather: null,
-    errorMsg: null
-  };
+  weather: Weather | null = null;
+  fetchingData: boolean = false;
+  errorMsg: string | null = null;
   _cityName: null | string = null;
   currentWeatherData: Weather | null = null;
   forecastWeatherDataList: Weather[] = [];
   subscriptions: Subscription[] = [];
+
+  // datepicker properties
   minDate: Date = new Date();
   maxDate: Date = new Date();
   bsConfig = { minDate: this.minDate, maxDate: this.maxDate, showWeekNumbers: false, isAnimated: true, keepDatepickerOpened: true, rangeInputFormat: 'MMMM Do YYYY', dateInputFormat: 'MMMM Do YYYY' };
@@ -45,24 +42,25 @@ export class CityWeatherComponent {
   }
 
   private getWeatherData(type: WeatherTypeEnum) {
-    this.data.errorMsg = null;
-    this.data.fetchingData = true;
+    this.errorMsg = null;
+    this.fetchingData = true;
 
     this.subscriptions.push(this.weatherService.getWeather(this._cityName!, type).subscribe({
       next: (val) => {
         if (type === WeatherTypeEnum.Current) {
           this.currentWeatherData = val;
-          this.data.weather = val;
+          this.weather = val;
         } else {
           this.forecastWeatherDataList = val.forecastList;
+          console.log(val.forecastList);
           this.getForecastDisplayData();
         }
-        this.data.fetchingData = false;
+        this.fetchingData = false;
       },
       error: (err) => {
         console.error(err);
-        this.data.errorMsg = `Weather data for ${this._cityName} is not available!`
-        this.data.fetchingData = false;
+        this.errorMsg = `Weather data for ${this._cityName} is not available!`
+        this.fetchingData = false;
       }
     }));
   }
@@ -70,11 +68,11 @@ export class CityWeatherComponent {
   handleWeatherByDateChange() {
     // we need to ensure upon initialization that we don't call get weather,
     // hence we are checking for fetchingData as well
-    if (this._cityName !== null && !this.data.fetchingData) {
+    if (this._cityName !== null && !this.fetchingData) {
       if (this.bsValue.toDateString() === this.minDate.toDateString()) {
         this.currentWeatherData === null ?
           this.getWeatherData(WeatherTypeEnum.Current) :
-          this.data.weather = { ...this.currentWeatherData! };
+          this.weather = { ...this.currentWeatherData! };
       } else {
         // if we already have forecast data, get it locally. Otherwise get fresh data from API
         if (this.forecastWeatherDataList.length === 0) {
@@ -87,8 +85,8 @@ export class CityWeatherComponent {
   }
 
   getForecastDisplayData() {
-    this.data.weather = _.find(this.forecastWeatherDataList, (data: Weather) => {
+    this.weather = _.find(this.forecastWeatherDataList, (data: Weather) => {
       return this.bsValue.toDateString() === data.date!.toDateString();
-    });
+    })!;
   }
 }

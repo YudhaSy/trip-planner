@@ -74,12 +74,18 @@ export class WeatherService {
    * @returns processed weather data list where each is at noon everyday for the next 5 days
    */
   private processForecastList(list: any[]): Weather[] {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const forecastList: Weather[] = [];
 
     list.forEach((val: any) => {
-      const forecastDate = new Date(val.dt * 1000);
-      // since api returns every 3 hours, we are just going to get one that is at 12pm
-      if (forecastDate.getHours() === 12 && forecastDate.getMinutes() === 0 && forecastDate.getSeconds() === 0) {
+      const datetime = new Date(val.dt * 1000); 
+      const timezoneOffsetInMilliseconds = datetime.getTimezoneOffset() * 60000; // api data is in GMT, need to convert to local tz
+      const forecastDate = new Date(datetime.getTime() + timezoneOffsetInMilliseconds);
+
+      // since api returns every 3 hours, we are going to get ones that are at 12pm excluding today's (current day)
+      if (forecastDate.getHours() === 12 && forecastDate.getMinutes() === 0 &&
+        forecastDate.getSeconds() === 0 && forecastDate.toDateString() !== today.toDateString()) {
         forecastList.push(this.processCurrentWeather(val));
       }
     });

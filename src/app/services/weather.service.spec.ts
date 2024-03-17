@@ -74,7 +74,7 @@ describe('WeatherService', () => {
     {
       "list": [
         {
-          "dt": 1711033200,
+          "dt": 1710968400,
           "main": {
             "temp": -2.14,
             "feels_like": -7.53,
@@ -94,10 +94,10 @@ describe('WeatherService', () => {
               "icon": "13n"
             }
           ],
-          "dt_txt": "2024-03-21 09:00:00"
+          "dt_txt": "2024-03-20 21:00:00"
         },
         {
-          "dt": 1711044000,
+          "dt": 1710763200,
           "main": {
             "temp": -2.26,
             "feels_like": -7.81,
@@ -117,7 +117,7 @@ describe('WeatherService', () => {
               "icon": "13n"
             }
           ],
-          "dt_txt": "2024-03-21 12:00:00"
+          "dt_txt": "2024-03-18 12:00:00"
         }
       ]
     };

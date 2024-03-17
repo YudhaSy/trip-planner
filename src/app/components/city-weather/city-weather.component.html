@@ -1,8 +1,28 @@
 <div class="row my-3">
   <div class="col">
-    <h5>{{_cityName}}'s Current Weather:</h5>
+    <h5>{{_cityName}}'s Current & Forecast Weather:</h5>
     <input class="w-50" type="text" bsDatepicker [bsConfig]="bsConfig" placement="top" [(bsValue)]="bsValue"
       (bsValueChange)="handleWeatherByDateChange()" />
-    <app-information-display [data]="data"></app-information-display>
+    <app-information-display 
+      [templateOutlet]="templateOutlet" 
+      [errorMsg]="errorMsg!" 
+      [fetchingData]="fetchingData">
+    </app-information-display>
   </div>
 </div>
+
+<ng-template #templateOutlet>
+  <div class="m-2">
+    <div class="weather-icon-container">
+      <img src="{{weather!.iconUrl}}">
+      <p>{{weather!.currentTemp}}&deg;C</p>
+    </div>
+    <div class="px-2">
+      <p class="mb-0">Feels like {{weather!.feelsLike}}&deg;C. {{weather!.description}}.</p>
+    </div>
+    <div class="px-2">
+      <p>Min temp: {{weather!.minTemp}}&deg;C. Max temp: {{weather!.maxTemp}}&deg;C. Humidity:
+        {{weather!.humidity}}&#37;.</p>
+    </div>
+  </div>
+</ng-template>

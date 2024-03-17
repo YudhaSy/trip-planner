@@ -66,7 +66,7 @@ describe('CityWeatherComponent', () => {
     component.handleWeatherByDateChange();
 
     expect(weatherServiceStub.getWeather).toHaveBeenCalledWith(cityName, WeatherTypeEnum.Forecast);
-    expect(component.data.fetchingData).toBe(false);
+    expect(component.fetchingData).toBe(false);
   });
 
   it('should handle current weather by date change', () => {
@@ -91,6 +91,6 @@ describe('CityWeatherComponent', () => {
 
     component.getForecastDisplayData();
 
-    expect(component.data.weather).toEqual(forecastWeatherDataList[0]);
+    expect(component.weather).toEqual(forecastWeatherDataList[0]);
   });
 });

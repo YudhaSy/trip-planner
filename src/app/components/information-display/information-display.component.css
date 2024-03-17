@@ -4,16 +4,6 @@
     overflow-y: auto;
 }
 
-.weather-icon-container {
-  display: inline-block;
-}
-
-.weather-icon-container img,
-.weather-icon-container p {
-  display: inline-block;
-  font-size: 2rem;
-}
-
 .error {
   color: red;
 }

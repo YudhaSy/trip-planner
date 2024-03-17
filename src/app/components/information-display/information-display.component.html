@@ -1,32 +1,13 @@
-<div class="info-container my-3 w-100" *ngIf="data !== undefined">
-  <ng-container *ngIf="data.fetchingData; else weatherDataFetchingComplete">
+<div class="info-container my-3 w-100">
+  <ng-container *ngIf="fetchingData; else fetchingComplete">
     <p class="m-3">Fetching Data...</p>
   </ng-container>
-
-  <ng-template #weatherDataFetchingComplete>
-    <ng-container class="px-3" *ngIf="data.errorMsg === null; else noDataAvailable">
-      <ng-container
-        *ngIf="data.type === displayTypeEnum.Weather && data.weather !== undefined; else cityDescriptionDisplay">
-        <div class="m-2">
-          <div class="weather-icon-container">
-            <img src="{{data.weather!.iconUrl}}">
-            <p>{{data.weather!.currentTemp}}&deg;C</p>
-          </div>
-          <div class="px-2">
-            <p class="mb-0">Feels like {{data.weather!.feelsLike}}&deg;C. {{data.weather!.description}}.</p>
-          </div>
-          <div class="px-2">
-            <p>Min temp: {{data.weather!.minTemp}}&deg;C. Max temp: {{data.weather!.maxTemp}}&deg;C. Humidity:
-              {{data.weather!.humidity}}&#37;.</p>
-          </div>
-        </div>
-      </ng-container>
-      <ng-template #cityDescriptionDisplay>
-        <div class="px-3" [innerHTML]="data.cityInfo"></div>
-      </ng-template>
+  <ng-template #fetchingComplete>
+    <ng-container class="px-3" *ngIf="errorMsg === null; else noDataAvailable">
+      <ng-container *ngTemplateOutlet="templateOutlet"></ng-container>      
     </ng-container>
     <ng-template #noDataAvailable>
-      <p class="error">{{data.errorMsg}}</p>
+      <p class="error m-3">{{errorMsg}}</p>
     </ng-template>
   </ng-template>
 </div>

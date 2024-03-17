@@ -2,8 +2,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Select } from '../../models/select';
 import { Subscription } from 'rxjs';
 import { WikipediaService } from '../../services/wikipedia.service';
-import { DisplayData } from '../../models/displayData';
-import { DisplayType } from '../../enums/displayType';
 
 @Component({
   selector: 'app-city-info',
@@ -13,12 +11,9 @@ import { DisplayType } from '../../enums/displayType';
 export class CityInfoComponent {
   @Output() cityNameChange = new EventEmitter<string | null>();
 
-  data: DisplayData = {
-    fetchingData: false,
-    type: DisplayType.Info,
-    cityInfo: null,
-    errorMsg: null
-  };
+  errorMsg: string | null = null;
+  fetchingData: boolean = false;
+  cityInfo: string | null = null;
   cities: Select[] = [
     { id: 1, name: 'Calgary' },
     { id: 2, name: 'Edmonton' },
@@ -36,34 +31,36 @@ export class CityInfoComponent {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
+  // handles ng-select selection and get necessary data from the selection
   citySelectionChange(cityId: number) {
     const city = this.getCityFromCities(cityId);
 
     if (city !== undefined) {
-      this.data.fetchingData = true;
-      this.data.errorMsg = null;
+      this.fetchingData = true;
+      this.errorMsg = null;
       this.cityNameChange.emit(city.name);
 
       this.subscriptions.push(this.wikipediaService.getCityDescription(city.name).subscribe({
         next: (val) => {
-          this.data.cityInfo = val;
-          this.data.fetchingData = false;
+          this.cityInfo = val;
+          this.fetchingData = false;
         },
         error: (err) => {
           console.error(err);
-          this.data.errorMsg = `Wikipedia summary for ${this.getCityFromCities(this.selectedCity!)!.name} is not currently available!`
-          this.data.fetchingData = false;
+          this.errorMsg = `Wikipedia summary for ${this.getCityFromCities(this.selectedCity!)!.name} is not currently available!`
+          this.fetchingData = false;
         }
       }));
     }
   }
 
+  // helper method to get city object from city list
   getCityFromCities(id: number) {
     return this.cities.find(obj => obj.id === id);
   }
 
   clearCityInfo() {
-    this.data.cityInfo = null;
+    this.cityInfo = null;
     this.cityNameChange.emit(null);
   }
 }

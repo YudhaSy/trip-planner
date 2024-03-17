@@ -1,0 +1,10 @@
+.weather-icon-container {
+  display: inline-block;
+}
+
+.weather-icon-container img,
+.weather-icon-container p {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 2rem;
+}

@@ -44,17 +44,17 @@ describe('CityInfoComponent', () => {
     component.citySelectionChange(1); // Select Calgary
 
     expect(wikipediaServiceStub.getCityDescription).toHaveBeenCalledWith(cityName);
-    expect(component.data.cityInfo).toEqual('Mock city description');
-    expect(component.data.fetchingData).toBe(false);
+    expect(component.cityInfo).toEqual('Mock city description');
+    expect(component.fetchingData).toBe(false);
   });
 
   it('should clear city info on clearCityInfo', () => {
-    component.data.cityInfo = 'Mock city description';
+    component.cityInfo = 'Mock city description';
     spyOn(component.cityNameChange, 'emit');
 
     component.clearCityInfo();
 
-    expect(component.data.cityInfo).toBeNull();
+    expect(component.cityInfo).toBeNull();
     expect(component.cityNameChange.emit).toHaveBeenCalledWith(null);
   });
 });
